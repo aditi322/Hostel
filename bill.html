@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Manage - Hostel Management System</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 40px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            height: 40px; /* Adjust the size of the logo */
+            margin-right: 10px; /* Space between logo and text */
+        }
+
+        .navbar .logo h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        .navbar .nav-links a:hover {
+            background-color: #0056b3;
+        }
+
+        .main-content {
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 600px; /* Increased width of the container */
+            max-width: 100%; /* Responsive for smaller screens */
+            box-sizing: border-box; /* Include padding in the width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-container label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 8px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container button {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px; /* Increased space between form elements */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box; /* Ensure padding does not exceed container width */
+        }
+
+        .form-container input:focus,
+        .form-container select:focus,
+        .form-container button:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="logoo.png" alt="Logo"> <!-- Add the logo image here -->
+            <h3>Hostel Management</h3>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="attendance.html">Attendance</a>
+            <a href="#">Bill Manage</a>
+            <a href="notice.html">Notice Board</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Bill Management</h1>
+
+        <!-- Add New Bill -->
+        <div class="form-container">
+            <h3>Add New Bill</h3>
+            <form id="bill-form" method="POST">
+                <label for="billType">Bill Type:</label>
+                <select id="billType" name="billtype" required>
+                    <option value="">Select Bill Type</option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Water">Water</option>
+                    <option value="Internet">Internet</option>
+                </select>
+
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" placeholder="Enter bill amount" required>
+
+                <label for="date">Due Date:</label>
+                <input type="date" id="date" name="duedate" required>
+
+                <button type="submit">Add Bill</button>
+            </form>
+        </div>
+
+        <!-- Bill List -->
+        <h3>All Bills</h3>
+        <table id="bill-table">
+            <thead>
+                <tr>
+                    <th>Bill Type</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const billForm = document.getElementById('bill-form');
+        const billTable = document.getElementById('bill-table').querySelector('tbody');
+
+        billForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const billType = document.getElementById('billType').value;
+            const amount = document.getElementById('amount').value;
+            const dueDate = document.getElementById('date').value;
+
+            fetch('backend/bill.php', {
+                method: 'POST',
+                body: new FormData(billForm)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const row = document.createElement('tr');
+                    const billId = data.bill_id;  // Assuming the response contains the bill ID
+                    row.innerHTML = `
+                        <td>${billType}</td>
+                        <td>${amount}</td>
+                        <td>${dueDate}</td>
+                        <td><button onclick="deleteRow(${billId}, this)">Delete</button></td>
+                    `;
+                    billTable.appendChild(row);
+                    billForm.reset();
+                } else {
+                    alert('Error adding bill. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+
+        function deleteRow(billId, button) {
+            // Confirm deletion
+            if (confirm('Are you sure you want to delete this bill?')) {
+                fetch('backend/bill.php', {
+                    method: 'POST',
+                    body: new URLSearchParams({ 'bill_id': billId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove the row from the table
+                        button.parentElement.parentElement.remove();
+                    } else {
+                        alert('Error deleting bill. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

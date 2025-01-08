@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management System Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Navbar styling */
+        .navbar {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Ensures padding doesn't break layout */
+}
+
+.navbar .logo img {
+    max-height: 95px; /* Adjust the maximum height for better fit */
+    width: auto; /* Maintain aspect ratio */
+}
+
+.navbar .nav-links {
+    display: flex;
+    gap: 10px; /* Reduced gap for smaller screens */
+    flex-wrap: wrap; /* Allows wrapping of links on smaller screens */
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    white-space: nowrap; /* Prevents text from breaking */
+}
+
+.navbar .nav-links a:hover {
+    background-color: #0056b3;
+}
+
+        /* Sidebar styling */
+    .sidebar {
+    width: 250px;
+    height: calc(100vh - 100px); /* Adjusts height to exclude navbar height */
+    background-color: #007bff;
+    color: #fff;
+    position: fixed;
+    top: 100px; /* Adjust to match navbar height */
+    left: 0;
+    overflow-y: auto;
+    padding-top: 20px;
+    box-sizing: border-box;
+}
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: #0056b3;
+        }
+
+    .main-content {
+    margin-left: 250px;
+    margin-top: 100px; /* Ensures the content doesn't overlap with the navbar */
+    padding: 20px;
+}
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .card p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .card-blue { background-color: #007bff; color: #fff; }
+        .card-green { background-color: #28a745; color: #fff; }
+        .card-orange { background-color: #ffc107; color: #fff; }
+        .card-red { background-color: #dc3545; color: #fff; }
+
+        .notice-board {
+            margin-top: 20px;
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .calendar {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar th, .calendar td {
+            width: 14.2%;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        .calendar th {
+            background-color: #f2f2f2;
+        }
+
+        .current-day {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="images/logoo.png" alt="Hostel Logo">
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="contact.html">Contact</a>
+            <a href="about.html">About</a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Hostel Management</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="attendance.html">Attendance</a>
+        <a href="meal.html">Meal Manage</a>
+        <a href="studentManage.html">Students Manage</a>
+        <a href="payment.html">Students Payment</a>
+        <a href="employee.html">Employee Manage</a>
+        <a href="bill.html">Bill Manage</a>
+        <a href="notice.html">Notice Board</a>
+        <a href="#">Settings</a>
+        <a href="#">Setup</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <span>System Admin</span>
+        </div>
+
+        <div class="cards">
+            <div class="card card-blue">
+                <h3><span id="employeeCount">0</span></h3>
+                <p>Total Employees</span></p>
+            </div>
+            <div class="card card-green">
+                <h3>2</h3>
+                <p>Current Students</p>
+            </div>
+            <div class="card card-orange">
+                <h3>2</h3>
+                <p>Total Rooms</p>
+            </div>
+            <div class="card card-red">
+                <h3>0</h3>
+
+                <p>Today's Meal</p>
+            </div>
+        </div>
+
+        <div class="notice-board">
+            <h3>Notice Board</h3>
+            <div id="dashboard-notices">
+                <!-- Default notices (if no dynamic notices are present) -->
+                <p>No new notices available.</p>
+            </div>
+        </div>
+
+        <div class="calendar">
+            <h3 id="calendar-title"></h3>
+            <table id="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody id="calendar-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        function generateCalendar() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const calendarTitle = document.getElementById('calendar-title');
+            const calendarBody = document.getElementById('calendar-body');
+            calendarTitle.innerText = today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            calendarBody.innerHTML = '';
+            let date = 1;
+
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement('tr');
+
+                for (let j = 0; j < 7; j++) {
+                    const cell = document.createElement('td');
+                    if (i === 0 && j < (firstDay === 0 ? 6 : firstDay - 1)) {
+                        cell.innerText = '';
+                    } else if (date > daysInMonth) {
+                        cell.innerText = '';
+                    } else {
+                        cell.innerText = date;
+                        if (date === today.getDate()) {
+                            cell.classList.add('current-day');
+                        }
+                        date++;
+                    }
+                    row.appendChild(cell);
+                }
+
+                calendarBody.appendChild(row);
+            }
+        }
+
+        generateCalendar();
+        function updateNoticeBoard() {
+            const noticeData = JSON.parse(localStorage.getItem('newNotice'));
+
+            // Clear existing default notices
+            const noticeBoard = document.getElementById('dashboard-notices');
+            noticeBoard.innerHTML = ""; // Clear the board first
+
+            if (noticeData) {
+                const newNotice = document.createElement('p');
+                newNotice.innerHTML = `
+                    <strong>${noticeData.title}</strong>
+                    <em>[${new Date(noticeData.date).toLocaleDateString()}]</em><br>
+                    ${noticeData.content}
+                `;
+                noticeBoard.appendChild(newNotice);
+                localStorage.removeItem('newNotice'); // Clear after rendering
+            } else {
+                // Display default message if no notices are found
+                noticeBoard.innerHTML = "<p>No new notices available.</p>";
+            }
+        }
+
+        // Load notices on page load
+        window.onload = updateNoticeBoard;
+
+        function updateEmployeeCount() {
+            const totalEmployees = localStorage.getItem('totalEmployees') || 0;
+            const employeeCard = document.querySelector('.card.card-blue');
+            const countSpan = employeeCard.querySelector('#employeeCount');
+            countSpan.innerText = totalEmployees;
+        }
+
+        // Initialize both updates on page load
+        window.onload = function () {
+            updateNoticeBoard();
+            updateEmployeeCount();
+        };
+    </script>
+</body>
+</html>

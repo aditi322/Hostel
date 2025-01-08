@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Selection</title>
+    <style>
+        /* General Body Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+    color: #333;
+}
+
+/* Logo Styling */
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.logo img {
+    height: 70px;
+    width: auto;
+}
+
+/* Main Container Styling */
+.container {
+    max-width: 850px;
+    margin: 100px auto 0;
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Heading and Paragraph Styling */
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #212529;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #495057;
+}
+
+/* Image Container Styling */
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.image-option {
+    position: relative;
+    flex: 1;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #f8f9fa;
+}
+
+.image-option img {
+    width: 100%;
+    height: 230px; /* Uniform image height */
+    object-fit: cover;
+    border-bottom: 4px solid #007bff; /* Accent color */
+}
+
+.image-option:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Overlay Text */
+.overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 123, 255, 0.85);
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s ease;
+}
+
+.image-option:hover .overlay {
+    background: rgba(0, 123, 255, 1);
+}
+
+    </style>
+</head>
+<body>
+    <!-- College Logo -->
+    <div class="logo">
+        <img src="images/logoo.png" alt="College Logo">
+    </div>
+
+    <div class="container">
+        <h1>Our Services</h1>
+        <p>Please select the service you would like to explore:</p>
+        
+        <!-- Images with Embedded Options -->
+        <div class="image-container">
+            <div class="image-option" onclick="navigateTo('hostel-management')">
+                <img src="images/hostel.webp" alt="Hostel Management">
+                <div class="overlay">Hostel Management</div>
+            </div>
+            <div class="image-option" onclick="navigateTo('tiffin-service')">
+                <img src="images/tiffin.jpg" alt="Tiffin Service">
+                <div class="overlay">Tiffin Service</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+function navigateTo(service) {
+    let url = "";
+    if(service === 'hostel-management') {
+        url = "login.html"; // URL for Hostel Management login
+    } else if(service === 'tiffin-service') {
+        url = "/tiffin-service/login.html"; // URL for Tiffin Service login
+    }
+    window.location.href = url;
+}
+</script>
+</body>
+</html>

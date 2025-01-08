@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees | Hostel Management</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        .navbar .logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .navbar .nav-links a:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            margin: 100px auto;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .add-employee-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .add-employee-section input,
+        .add-employee-section button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .add-employee-section button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .add-employee-section button:hover {
+            background-color: #218838;
+        }
+
+        .employee-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .employee-table th,
+        .employee-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .employee-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .employee-table td {
+            background-color: #f9f9f9;
+        }
+
+        .action-buttons button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+        }
+
+        .action-buttons .edit-btn {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .action-buttons .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="logoo.png" alt="Hostel Logo">
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="attendance.html">Attendance</a>
+            <a href="employeeManage.html">Employees</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Employee Management</h1>
+        <div class="add-employee-section">
+            <input type="text" id="employeeName" placeholder="Enter Employee Name">
+            <input type="text" id="employeeRole" placeholder="Enter Role">
+            <button onclick="addEmployee()">Add Employee</button>
+        </div>
+        <table class="employee-table">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+                <!-- Rows will be dynamically added -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const apiUrl = "backend/employee.php";
+
+        function loadEmployeeTable() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById("employeeTableBody");
+                    tableBody.innerHTML = "";
+
+                    if (data.success) {
+                        data.employees.forEach(employee => {
+                            const row = `
+                                <tr>
+                                    <td>${employee.id}</td>
+                                    <td>${employee.name}</td>
+                                    <td>${employee.role}</td>
+                                    <td class="action-buttons">
+                                        <button class="delete-btn" onclick="deleteEmployee(${employee.id})">Delete</button>
+                                    </td>
+                                </tr>`;
+                            tableBody.innerHTML += row;
+                        });
+                    }
+                    updateEmployeeCount(data.employees.length);
+                })
+                .catch(error => console.error("Error fetching employees:", error));
+        }
+
+        function addEmployee() {
+            const name = document.getElementById("employeeName").value.trim();
+            const role = document.getElementById("employeeRole").value.trim();
+
+            if (name && role) {
+                fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `name=${encodeURIComponent(name)}&role=${encodeURIComponent(role)}`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            loadEmployeeTable();
+                            document.getElementById("employeeName").value = "";
+                            document.getElementById("employeeRole").value = "";
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error("Error adding employee:", error));
+            } else {
+                alert("Please enter both name and role.");
+            }
+        }
+
+        function deleteEmployee(id) {
+            fetch(apiUrl, {
+                method: "DELETE",
+                body: JSON.stringify({ id })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadEmployeeTable();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error("Error deleting employee:", error));
+        }
+
+        function updateEmployeeCount(count) {
+            localStorage.setItem("totalEmployees", count);
+        }
+
+        document.addEventListener("DOMContentLoaded", loadEmployeeTable);
+    </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 10px 20px;
+            color: white;
+        }
+        .navbar .logo img {
+    max-height: 95px; /* Adjust the maximum height for better fit */
+    width: auto; /* Maintain aspect ratio */
+}
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-section select, .filter-section button {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .filter-section button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .filter-section button:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        table td {
+            font-size: 14px;
+        }
+
+        .actions button {
+            padding: 5px 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="logoo.png" alt="Hostel Logo">
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Home</a>
+            <a href="#">Payments</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Payment View</h1>
+        </div>
+
+        <div class="filter-section">
+            <select id="studentName">
+                <option value="">Select Student</option>
+                <option value="zaheer">zaheer</option>
+                <option value="sameer">sameer</option>
+            </select>
+            <button onclick="filterPayments()">View</button>
+            <button onclick="printPage()">Print</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Payment Date</th>
+                    <th>Paid By</th>
+                    <th>Transaction/Mobile No</th>
+                    <th>Amount</th>
+                    <th>Remark</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="paymentTable">
+                <!-- Initially blank -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const paymentData = [
+            {
+                name: "zaheer",
+                paymentDate: "27/02/2015",
+                paidBy: "Bank",
+                transaction: "DD-4556",
+                amount: "5500.00",
+                remark: "Test"
+            },
+            {
+                name: "sameer",
+                paymentDate: "17/04/2015",
+                paidBy: "Cash",
+                transaction: "0185236974",
+                amount: "6000.00",
+                remark: "All cost rent meal, net, tv"
+            }
+        ];
+
+        function filterPayments() {
+            const studentName = document.getElementById('studentName').value;
+            const tableBody = document.getElementById('paymentTable');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            if (studentName) {
+                const filteredData = paymentData.filter(item => item.name === studentName);
+                filteredData.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>${item.paymentDate}</td>
+                        <td>${item.paidBy}</td>
+                        <td>${item.transaction}</td>
+                        <td>${item.amount}</td>
+                        <td>${item.remark}</td>
+                        <td class="actions">
+                            <button class="btn-edit" onclick="editRow(this)">Edit</button>
+                            <button class="btn-delete" onclick="deleteRow(this)">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        function editRow(button) {
+            const row = button.parentElement.parentElement;
+            const cells = row.querySelectorAll('td');
+
+            cells.forEach((cell, index) => {
+                if (index < cells.length - 1) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = cell.innerText;
+                    cell.innerHTML = '';
+                    cell.appendChild(input);
+                }
+            });
+
+            button.innerText = 'Save';
+            button.onclick = function () {
+                saveRow(button);
+            };
+        }
+
+        function saveRow(button) {
+            const row = button.parentElement.parentElement;
+            const cells = row.querySelectorAll('td');
+
+            cells.forEach((cell, index) => {
+                if (index < cells.length - 1) {
+                    const input = cell.querySelector('input');
+                    cell.innerText = input.value;
+                }
+            });
+
+            button.innerText = 'Edit';
+            button.onclick = function () {
+                editRow(button);
+            };
+        }
+
+        function printPage() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

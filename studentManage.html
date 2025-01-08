@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <style>
+        /* Add your original CSS code here */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            height: 60px;
+        }
+
+        .navbar .logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .navbar .nav-links a:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            color: #333;
+            margin: 0 0 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .container label {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #555;
+        }
+
+        .container input,
+        .container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .container input:focus,
+        .container select:focus {
+            border-color: #4caf50;
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+        }
+
+        .add-student-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4caf50;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .add-student-btn:hover {
+            background: #45a049;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            font-size: 1rem;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        th {
+            background: #f7f7f7;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(odd) {
+            background: #f9f9f9;
+        }
+
+        .delete-student-btn {
+            background: #f44336;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .delete-student-btn:hover {
+            background: #e02d1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="logoo.png" alt="Hostel Logo">
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="#">Attendance</a>
+            <a href="#">Students</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <h1>Student Management</h1>
+
+    <form id="student-form" class="container" action="backend/student.php" method="post">
+        <label for="room-no">Room No:</label>
+        <input type="text" id="room-no" name="room" placeholder="Enter room number">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter student's name">
+
+        <label for="registration-date">Registration Date:</label>
+        <input type="date" id="registration-date" name="rdate">
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob">
+
+        <label for="phone">Phone No:</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit phone number">
+
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" placeholder="Enter city name">
+
+        <label for="fathers-name">Father's Name:</label>
+        <input type="text" id="fathers-name" name="fathername" placeholder="Enter father's name">
+
+        <label for="room-type">Room Type:</label>
+        <select id="room-type" name="roomtype">
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
+        </select>
+
+        <button type="submit" class="add-student-btn">Add Student</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Room No.</th>
+                <th>Name</th>
+                <th>Registration Date</th>
+                <th>Date of Birth</th>
+                <th>Phone No.</th>
+                <th>City</th>
+                <th>Father's Name</th>
+                <th>Room Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="student-table">
+            <tr id="empty-state">
+                <td colspan="9" style="color: gray; text-align: center;">No students added yet.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const studentTable = document.getElementById("student-table");
+        const emptyState = document.getElementById("empty-state");
+
+        document.getElementById("student-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch("backend/student.php", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const newRow = document.createElement("tr");
+                    newRow.innerHTML = `
+                        <td>${data.student.room}</td>
+                        <td>${data.student.name}</td>
+                        <td>${data.student.rdate}</td>
+                        <td>${data.student.dob}</td>
+                        <td>${data.student.phone}</td>
+                        <td>${data.student.city}</td>
+                        <td>${data.student.fathername}</td>
+                        <td>${data.student.roomtype}</td>
+                        <td><button class="delete-student-btn" onclick="deleteStudent(this)">Delete</button></td>
+                    `;
+
+                    if (emptyState) {
+                        emptyState.remove();
+                    }
+
+                    studentTable.appendChild(newRow);
+                    this.reset();
+                } else {
+                    alert(data.message || "Error adding student. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again.");
+            });
+        });
+
+        function deleteStudent(button) {
+            const row = button.parentElement.parentElement;
+            const room = row.cells[0].innerText; // Assuming the room number is in the first cell
+
+            fetch("backend/student.php", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ room }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    row.remove();
+
+                    if (studentTable.rows.length === 0) {
+                        studentTable.innerHTML = `<tr id="empty-state"><td colspan="9" style="color: gray; text-align: center;">No students added yet.</td></tr>`;
+                    }
+                } else {
+                    alert(data.message || "Error deleting student. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again.");
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance | Hostel Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        .navbar .logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .navbar .nav-links a:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            margin: 100px auto;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .filter-section select,
+        .filter-section button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .attendance-table th,
+        .attendance-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .attendance-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .attendance-table td {
+            background-color: #f9f9f9;
+        }
+
+        .attendance-table .present {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .attendance-table .absent {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .mark-attendance button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+        }
+
+        .mark-attendance .present-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .mark-attendance .absent-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .mark-attendance button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="logoo.png" alt="Hostel Logo">
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="attendance.html">Attendance</a>
+            <a href="studentManage.html">Students</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Attendance Management</h1>
+        <div class="filter-section">
+            <select id="filterAttendance">
+                <option value="all">Show All</option>
+                <option value="present">Present</option>
+                <option value="absent">Absent</option>
+            </select>
+            <button onclick="filterAttendance()">Filter</button>
+        </div>
+        <table class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+                <!-- Rows will be dynamically added by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const students = [
+            { id: 1, name: "John Doe", date: "2025-01-03", status: "present" },
+            { id: 2, name: "Jane Smith", date: "2025-01-03", status: "absent" },
+            { id: 3, name: "Michael Brown", date: "2025-01-03", status: "present" },
+        ];
+
+        function loadAttendanceTable() {
+            const tableBody = document.getElementById('attendanceTableBody');
+            tableBody.innerHTML = '';
+            students.forEach(student => {
+                const row = `
+                    <tr class="${student.status}">
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>${student.date}</td>
+                        <td class="${student.status}">
+                            ${student.status.charAt(0).toUpperCase() + student.status.slice(1)}
+                        </td>
+                        <td class="mark-attendance">
+                            <button class="present-btn" onclick="markAttendance(${student.id}, 'present')">Mark Present</button>
+                            <button class="absent-btn" onclick="markAttendance(${student.id}, 'absent')">Mark Absent</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function markAttendance(id, status) {
+            const student = students.find(s => s.id === id);
+            if (student) {
+                student.status = status;
+                loadAttendanceTable();
+            }
+        }
+
+        function filterAttendance() {
+            const filter = document.getElementById('filterAttendance').value;
+            const tableBody = document.getElementById('attendanceTableBody');
+            tableBody.innerHTML = '';
+            students.forEach(student => {
+                if (filter === "all" || student.status === filter) {
+                    const row = `
+                        <tr class="${student.status}">
+                            <td>${student.id}</td>
+                            <td>${student.name}</td>
+                            <td>${student.date}</td>
+                            <td class="${student.status}">
+                                ${student.status.charAt(0).toUpperCase() + student.status.slice(1)}
+                            </td>
+                            <td class="mark-attendance">
+                                <button class="present-btn" onclick="markAttendance(${student.id}, 'present')">Mark Present</button>
+                                <button class="absent-btn" onclick="markAttendance(${student.id}, 'absent')">Mark Absent</button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAttendanceTable();
+        });
+    </script>
+</body>
+</html>

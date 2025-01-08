@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice Page</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo img {
+            max-height: 95px;
+            width: auto;
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li {
+            display: inline;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #dcdfe6;
+        }
+
+        /* Container Styles */
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dcdfe6;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #2c3e50;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: scale(1.02);
+        }
+
+        .notice-display {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar Section -->
+<div class="navbar">
+    <div class="logo">
+        <img src="logoo.png" alt="Hostel Logo">
+    </div>
+    <ul>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Notices</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <h1>Notice Board</h1>
+
+    <div class="form-group">
+        <label for="notice-title">Notice Title:</label>
+        <input type="text" id="notice-title" placeholder="Enter notice title">
+    </div>
+
+    <div class="form-group">
+        <label for="notice-content">Notice Content:</label>
+        <textarea id="notice-content" placeholder="Enter notice content" rows="5"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="notice-date">Date:</label>
+        <input type="date" id="notice-date">
+    </div>
+
+    <button onclick="addNotice()">Submit Notice</button>
+
+    <div class="notice-display" id="notice-display"></div>
+</div>
+
+<script>
+    function addNotice() {
+        const title = document.getElementById("notice-title").value;
+        const content = document.getElementById("notice-content").value;
+        const date = document.getElementById("notice-date").value;
+
+        if (!title || !content || !date) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        const noticeData = { title, content, date };
+        localStorage.setItem('newNotice', JSON.stringify(noticeData));
+        alert("Notice submitted successfully!");
+
+        // Clear input fields
+        document.getElementById("notice-title").value = "";
+        document.getElementById("notice-content").value = "";
+        document.getElementById("notice-date").value = "";
+    }
+</script>
+
+</body>
+</html>

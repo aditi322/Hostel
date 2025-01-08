@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="styles/styles.css"> <!-- Link to your CSS -->
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+</style><!-- JavaScript for handling AJAX -->
+</head>
+<body>
+    <div class="container">
+        <h2>Forgot Password</h2>
+        <p>Please enter your email or phone number to receive an OTP for password recovery.</p>
+
+        <form action="forgot_password.php" method="POST" id="forgot-password-form">
+            <!-- Input for Email or Phone -->
+            <div class="form-group">
+                <label for="email_or_phone">Email or Phone:</label>
+                <input
+                    type="text"
+                    id="email_or_phone"
+                    name="email_or_phone"
+                    placeholder="Enter your email or phone number"
+                    required
+                />
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Send OTP</button>
+        </form>
+
+        <!-- Back to Login Link -->
+        <p>
+            <a href="login page.html">Back to Login</a>
+        </p>
+    </div>
+    <script>
+        document.querySelector("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const emailOrPhone = document.querySelector("input[name='email_or_phone']").value.trim();
+
+    try {
+        const response = await fetch("backend/forgot_password.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email_or_phone: emailOrPhone }),
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            alert(`OTP: ${result.otp}. Use this to reset your password.`);
+            // Redirect to reset password page
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+});
+
+    </script>
+</body>
+</html>
